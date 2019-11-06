@@ -140,7 +140,7 @@ func suitableMethods(typ reflect.Type, reportErr bool) Method {
 func newValue(t reflect.Type) interface{} {
 	if t.Kind() == reflect.Ptr {
 		return reflect.New(t.Elem()).Interface()
-	} else {
-		return reflect.New(t).Interface()
 	}
+
+	return reflect.New(t).Interface()
 }
