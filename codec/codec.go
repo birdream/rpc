@@ -1,4 +1,4 @@
-package seliaze
+package codec
 
 import "github.com/vmihailenco/msgpack"
 
@@ -18,8 +18,8 @@ var codecs = map[SerializeType]Codec{
 	MessagePack: &MessagePackCodec{},
 }
 
-// NewCodec ..
-func NewCodec(t SerializeType) Codec {
+// GetCodec ..
+func GetCodec(t SerializeType) Codec {
 	return codecs[t]
 }
 
