@@ -194,5 +194,15 @@ func (s *simpleServer) Serve(network string, addr string) (err error) {
 }
 
 func (s *simpleServer) Close() error {
-	return nil
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	s.shutdown = true
+
+	err := s.tr.Close()
+
+	s.serviceMap.Range(func(key, value interface{}) bool {
+		s.serviceMap.Delete(key)
+		return true
+	})
+	return err
 }
