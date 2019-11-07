@@ -13,11 +13,11 @@ type Option struct {
 	TransportType transport.TransportType
 }
 
-// var defaultOption = Option{
-// 	ProtocolType:  protocol.Default,
-// 	SerializeType: codec.MessagePack,
-// 	CompressType:  protocol.CompressTypeNone,
-// 	TransportType: transport.TCPTransport,
-// }
+var DefaultOption = Option{
+	ProtocolType:  protocol.Default,
+	SerializeType: codec.MessagePack,
+	CompressType:  protocol.CompressTypeNone,
+	TransportType: transport.TCPTransport,
+}
 
 // defaultOption = defaultOption
