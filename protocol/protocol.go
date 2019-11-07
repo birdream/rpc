@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"errors"
 	"io"
+	"rpc/codec"
 
-	"github.com/megaredfan/rpc-demo/codec"
 	"github.com/vmihailenco/msgpack"
 )
 
@@ -108,20 +108,24 @@ func (RPCProtocol) DecodeMessage(r io.Reader) (msg *Message, err error) {
 	if err != nil {
 		return
 	}
+
 	if !checkMagic(first3bytes[:2]) {
 		err = errors.New("wrong protocol")
 		return
 	}
+
 	totalLenBytes := make([]byte, 4)
 	_, err = io.ReadFull(r, totalLenBytes)
 	if err != nil {
 		return
 	}
+
 	totalLen := int(binary.BigEndian.Uint32(totalLenBytes))
 	if totalLen < 4 {
 		err = errors.New("invalid total length")
 		return
 	}
+
 	data := make([]byte, totalLen)
 	_, err = io.ReadFull(r, data)
 	headerLen := int(binary.BigEndian.Uint32(data[:4]))
@@ -131,9 +135,11 @@ func (RPCProtocol) DecodeMessage(r io.Reader) (msg *Message, err error) {
 	if err != nil {
 		return
 	}
+
 	msg = new(Message)
 	msg.Header = header
 	msg.Data = data[headerLen+4:]
+
 	return
 }
 

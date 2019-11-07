@@ -1,12 +1,8 @@
 package codec
 
-import "github.com/vmihailenco/msgpack"
-
-// Codec ..
-type Codec interface {
-	Encode(value interface{}) ([]byte, error)
-	Decode(data []byte, value interface{}) error
-}
+import (
+	"github.com/vmihailenco/msgpack"
+)
 
 type SerializeType byte
 
@@ -18,20 +14,21 @@ var codecs = map[SerializeType]Codec{
 	MessagePack: &MessagePackCodec{},
 }
 
-// GetCodec ..
+type Codec interface {
+	Encode(value interface{}) ([]byte, error)
+	Decode(data []byte, value interface{}) error
+}
+
 func GetCodec(t SerializeType) Codec {
 	return codecs[t]
 }
 
-// MessagePackCodec ..
 type MessagePackCodec struct{}
 
-// Encode ..
 func (c MessagePackCodec) Encode(v interface{}) ([]byte, error) {
 	return msgpack.Marshal(v)
 }
 
-// Decode ..
 func (c MessagePackCodec) Decode(data []byte, v interface{}) error {
 	return msgpack.Unmarshal(data, v)
 }

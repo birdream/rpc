@@ -73,8 +73,8 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 
 		sname := request.ServiceName
 		mname := request.MethodName
-
 		srvInterface, ok := s.serviceMap.Load(sname)
+
 		if !ok {
 			s.writeErrorResponse(response, tr, "can not find service")
 			return
@@ -84,6 +84,7 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 		if !ok {
 			s.writeErrorResponse(response, tr, "not *service type")
 			return
+
 		}
 
 		mtype, ok := srv.methods[mname]
@@ -91,33 +92,26 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 			s.writeErrorResponse(response, tr, "can not find method")
 			return
 		}
-
 		argv := newValue(mtype.ArgType)
 		replyv := newValue(mtype.ReplyType)
 
 		ctx := context.Background()
 		err = s.codec.Decode(request.Data, argv)
 
-		var replayThings []reflect.Value
-
+		var returns []reflect.Value
 		if mtype.ArgType.Kind() != reflect.Ptr {
-			replayThings = mtype.method.Func.Call([]reflect.Value{
-				srv.rcvr,
+			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
 				reflect.ValueOf(argv).Elem(),
-				reflect.ValueOf(replyv),
-			})
+				reflect.ValueOf(replyv)})
 		} else {
-			replayThings = mtype.method.Func.Call([]reflect.Value{
-				srv.rcvr,
+			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
 				reflect.ValueOf(argv),
-				reflect.ValueOf(replyv),
-			})
+				reflect.ValueOf(replyv)})
 		}
-
-		if len(replayThings) > 0 && replayThings[0].Interface() != nil {
-			err = replayThings[0].Interface().(error)
+		if len(returns) > 0 && returns[0].Interface() != nil {
+			err = returns[0].Interface().(error)
 			s.writeErrorResponse(response, tr, err.Error())
 			return
 		}
