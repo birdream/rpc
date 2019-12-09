@@ -28,7 +28,7 @@ func main() {
 
 		reply := &shared.Reply{}
 		fmt.Println("=========Call")
-		if err = c.Call(context.TODO(), "Arith.XX", args, reply); err != nil {
+		if err = c.Call(context.TODO(), "Arith.Mul", &args, reply); err != nil {
 			fmt.Println("=========1")
 			panic(err)
 		} else {
@@ -36,6 +36,7 @@ func main() {
 			fmt.Println(reply.C)
 		}
 
+		fmt.Println("----out?")
 		wg.Done()
 	}()
 

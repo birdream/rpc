@@ -9,7 +9,7 @@ import (
 
 type Arith struct{}
 
-//arg可以是指针类型，也可以是指针类型
+// Add arg可以是指针类型，也可以是指针类型
 func (a Arith) Add(ctx context.Context, arg *shared.Args, reply *shared.Reply) error {
 	fmt.Println("=====In Add")
 
