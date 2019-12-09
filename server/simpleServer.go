@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"reflect"
@@ -93,12 +94,14 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 			return
 		}
 		argv := newValue(mtype.ArgType)
+
 		replyv := newValue(mtype.ReplyType)
 
 		ctx := context.Background()
 		err = s.codec.Decode(request.Data, argv)
 
 		var returns []reflect.Value
+
 		if mtype.ArgType.Kind() != reflect.Ptr {
 			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
@@ -110,6 +113,7 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 				reflect.ValueOf(argv),
 				reflect.ValueOf(replyv)})
 		}
+		fmt.Println("---")
 		if len(returns) > 0 && returns[0].Interface() != nil {
 			err = returns[0].Interface().(error)
 			s.writeErrorResponse(response, tr, err.Error())
