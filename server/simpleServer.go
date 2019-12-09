@@ -103,6 +103,11 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 		var returns []reflect.Value
 
 		if mtype.ArgType.Kind() != reflect.Ptr {
+			fmt.Println("srv.rcvr", srv.rcvr)
+			fmt.Println("ctx", reflect.ValueOf(ctx))
+			fmt.Println("reflect.ValueOf(argv).Elem()", reflect.ValueOf(argv).Elem())
+			fmt.Println("reflect.ValueOf(replyv)", reflect.ValueOf(replyv))
+
 			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
 				reflect.ValueOf(argv).Elem(),
