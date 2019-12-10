@@ -15,6 +15,23 @@ func (t *T) Goo(a int) {
 	fmt.Println("goo", a)
 }
 
+func (t T) Zoo(a *string) (res *string) {
+	fmt.Println("zoo", a)
+
+	res = a
+
+	return
+}
+
+func newValue(t reflect.Type) interface{} {
+	if t.Kind() == reflect.Ptr {
+		fmt.Println("is pointer")
+		return reflect.New(t.Elem()).Interface()
+	}
+
+	return reflect.New(t).Interface()
+}
+
 func main() {
 	var t T
 
@@ -43,15 +60,22 @@ func main() {
 	// fmt.Println(reflect.TypeOf(&t).Method(1).Type)
 
 	method1Name := reflect.TypeOf(&t).Method(1).Name
-
 	if reflect.TypeOf(&t).Method(1).Type.Kind() == reflect.Ptr {
 		fmt.Println(method1Name, " is pointer")
 	} else {
 		fmt.Println(method1Name, " is not a pointer")
 	}
 
+	method2Name := reflect.TypeOf(t).Method(0).Name
+	if reflect.TypeOf(t).Method(0).Type.Kind() == reflect.Ptr {
+		fmt.Println(method2Name, " is pointer")
+	} else {
+		fmt.Println(method2Name, " is not a pointer")
+	}
+
 	fmt.Println()
 
+	// reflect.Typeof().Method().Func.Call Sample
 	methodFoo := reflect.TypeOf(&t).Method(0)
 	methodFoo.Func.Call([]reflect.Value{
 		reflect.ValueOf(&t),
@@ -62,4 +86,14 @@ func main() {
 		reflect.ValueOf(&t),
 		reflect.ValueOf(4),
 	})
+
+	methodZoo := reflect.TypeOf(t).Method(0)
+	str := "hello Norman"
+	// var res *string
+
+	methodZoo.Func.Call([]reflect.Value{
+		reflect.ValueOf(t),
+		reflect.ValueOf(&str),
+	})
+
 }

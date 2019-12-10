@@ -107,11 +107,13 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 			fmt.Println("ctx", reflect.ValueOf(ctx))
 			fmt.Println("reflect.ValueOf(argv).Elem()", reflect.ValueOf(argv).Elem())
 			fmt.Println("reflect.ValueOf(replyv)", reflect.ValueOf(replyv))
+			fmt.Println("mtype.method.Name", mtype.method.Name)
 
 			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
 				reflect.ValueOf(argv).Elem(),
-				reflect.ValueOf(replyv)})
+				reflect.ValueOf(replyv),
+			})
 		} else {
 			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
