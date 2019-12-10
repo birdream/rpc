@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 )
@@ -35,8 +36,12 @@ func main() {
 		fmt.Println("It is not ok for loading the srv method", mName)
 	}
 
+	// ctx := context.Background()
+
+	ctx := context.Background()
+
 	mtype.Method.Func.Call([]reflect.Value{
-		// reflect.ValueOf(h),
-		// reflect.ValueOf(ctx),
+		reflect.ValueOf(h),
+		reflect.ValueOf(ctx),
 	})
 }
