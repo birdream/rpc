@@ -1,18 +1,42 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 func main() {
-	// var h Handlers1
+	var h Handlers1
+
+	var (
+		ok           bool
+		srvInterface interface{}
+		srv          *service
+		mtype        *methodType
+	)
+
 	Register(Handlers1{})
 
 	srvName := "Handlers1"
 	mName := "Foo"
 
-	service, ok := serviceMap.Load(srvName)
+	srvInterface, ok = serviceMap.Load(srvName)
 	if !ok {
-		fmt.Println("It is not ok for loading the ", srvName)
+		fmt.Println("It is not ok for loading the srv interface", srvName)
 	}
 
-	method := service.methods[nName]
+	srv, ok = srvInterface.(*service)
+	if !ok {
+		fmt.Println("It is not ok for loading the srv", srvName)
+	}
+
+	mtype, ok = srv.methods[mName]
+	if !ok {
+		fmt.Println("It is not ok for loading the srv method", mName)
+	}
+
+	mtype.Method.Func.Call([]reflect.Value{
+		// reflect.ValueOf(h),
+		// reflect.ValueOf(ctx),
+	})
 }
