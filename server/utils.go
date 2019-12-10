@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"reflect"
 	"unicode"
@@ -98,9 +99,11 @@ func validateReply(mtype reflect.Type, reportErr bool, mname string) (returnType
 
 type Method map[string]*methodType
 
-//过滤符合规则的方法，从net.rpc包抄的
+// 过滤符合规则的方法，从net.rpc包抄的
 func suitableMethods(typ reflect.Type, reportErr bool) Method {
 	methods := make(Method)
+
+	fmt.Println("typ.NumMethod(),", typ.NumMethod())
 
 	for m := 0; m < typ.NumMethod(); m++ {
 		method := typ.Method(m)

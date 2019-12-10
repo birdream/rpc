@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+)
 
 type T struct{}
 
@@ -24,7 +26,40 @@ func main() {
 
 	// reflect.ValueOf(&t).Method.Func.Call()
 	// reflect.Method.Func.Call()
-	reflect.Type().Method.Func.Call([]reflect.Value{
+
+	// fmt.Println(reflect.TypeOf(t).Method(1).Func)
+
+	fmt.Println(reflect.TypeOf(&t).NumMethod())
+
+	fmt.Println(reflect.TypeOf(&t).Method(0).Name)
+	// fmt.Println(reflect.TypeOf(&t).Method(1).Name)
+
+	// T.Method(0).Func.Call([]reflect.Value{
+	// 	reflect.ValueOf(4),
+	// })
+
+	// ctx := context.Background()
+	// fmt.Println(reflect.TypeOf(&t).Method(1).Name)
+	// fmt.Println(reflect.TypeOf(&t).Method(1).Type)
+
+	method1Name := reflect.TypeOf(&t).Method(1).Name
+
+	if reflect.TypeOf(&t).Method(1).Type.Kind() == reflect.Ptr {
+		fmt.Println(method1Name, " is pointer")
+	} else {
+		fmt.Println(method1Name, " is not a pointer")
+	}
+
+	fmt.Println()
+
+	methodFoo := reflect.TypeOf(&t).Method(0)
+	methodFoo.Func.Call([]reflect.Value{
+		reflect.ValueOf(&t),
+	})
+
+	methodGoo := reflect.TypeOf(&t).Method(1)
+	methodGoo.Func.Call([]reflect.Value{
+		reflect.ValueOf(&t),
 		reflect.ValueOf(4),
 	})
 }
