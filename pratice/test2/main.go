@@ -69,4 +69,7 @@ func main() {
 	} else {
 		fmt.Println("&h is not a pointer")
 	}
+
+	fmt.Println("reflect.TypeOf(h).NumMethod()", reflect.TypeOf(h).NumMethod())
+	fmt.Println("reflect.TypeOf(&h).NumMethod()", reflect.TypeOf(&h).NumMethod())
 }
