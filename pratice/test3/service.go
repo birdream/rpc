@@ -45,6 +45,20 @@ func Register(handlerStruct interface{}) {
 		}
 	}
 
+	// fmt.Println("reflect.TypeOf(&handlerStruct).NumMethod()", reflect.TypeOf(handlerStruct).Method(0))
+	// for i := 0; i < reflect.TypeOf(&handlerStruct).NumMethod(); i++ {
+	// 	method := reflect.TypeOf(&handlerStruct).Method(i)
+	// 	mname := method.Name
+	// 	mtype := method.Type
+	// 	mreply := mtype.Out(0) // reply must be an error not anything else
+
+	// 	srv.methods[mname] = &methodType{
+	// 		Method:    reflect.TypeOf(handlerStruct).Method(i),
+	// 		ArgType:   mtype,
+	// 		ReplyType: mreply,
+	// 	}
+	// }
+
 	// storefront in serviceMap
 	serviceMap.Store(srvName, srv) // Handlers1: service1
 }

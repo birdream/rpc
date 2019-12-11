@@ -29,7 +29,7 @@ func (h Handlers1) Foo(ctx context.Context, arg *Args, reply *Reply) error {
 }
 
 // Goo ..
-func (h *Handlers1) Goo(ctx context.Context, arg *Args, reply *Reply) error {
+func (h Handlers1) Goo(ctx context.Context, arg Args, reply *Reply) error {
 	fmt.Println("Goo is calling with", arg.A, arg.B)
 
 	reply.r = "Hello Norman, this is the Goo result"
