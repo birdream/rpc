@@ -36,3 +36,12 @@ func (h Handlers1) Goo(ctx context.Context, arg Args, reply *Reply) error {
 
 	return nil
 }
+
+// Zoo ..
+func (h *Handlers1) Zoo(ctx context.Context, arg Args, reply *Reply) error {
+	fmt.Println("Zoo is calling with", arg.A, arg.B)
+
+	reply.r = "Hello Norman, this is the Zoo result"
+
+	return nil
+}

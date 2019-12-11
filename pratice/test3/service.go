@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"reflect"
 	"sync"
 )
@@ -44,6 +45,10 @@ func Register(handlerStruct interface{}) {
 			ReplyType: mreply,
 		}
 	}
+
+	fmt.Println("reflect.TypeOf(handlerStruct).NumMethod()", reflect.TypeOf(handlerStruct).NumMethod())
+	fmt.Println("reflect.TypeOf(&handlerStruct).NumMethod()", reflect.TypeOf(&handlerStruct).NumMethod())
+	fmt.Println("reflect.PtrTo(reflect.TypeOf(handlerStruct)).NumMethod()", reflect.PtrTo(reflect.TypeOf(handlerStruct)).NumMethod())
 
 	// fmt.Println("reflect.TypeOf(&handlerStruct).NumMethod()", reflect.TypeOf(handlerStruct).Method(0))
 	// for i := 0; i < reflect.TypeOf(&handlerStruct).NumMethod(); i++ {
