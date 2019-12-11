@@ -18,6 +18,8 @@ func main() {
 
 	Register(Handlers1{})
 
+	fmt.Println("----OK Register")
+
 	srvName := "Handlers1"
 	mName := "Foo"
 
@@ -39,9 +41,15 @@ func main() {
 	// ctx := context.Background()
 
 	ctx := context.Background()
+	args := &Args{0, "Hey"}
+	reply := &Reply{}
 
 	mtype.Method.Func.Call([]reflect.Value{
 		reflect.ValueOf(h),
 		reflect.ValueOf(ctx),
+		reflect.ValueOf(args),
+		reflect.ValueOf(reply),
 	})
+
+	fmt.Println(reply.r)
 }

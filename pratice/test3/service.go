@@ -1,7 +1,9 @@
 package main
 
-import "sync"
-import "reflect"
+import (
+	"reflect"
+	"sync"
+)
 
 var serviceMap sync.Map
 
@@ -30,7 +32,7 @@ func Register(handlerStruct interface{}) {
 	srv.methods = make(map[string]*methodType)
 
 	// loop the method of the handler struct and map them to methods
-	for i := 0; i < reflect.TypeOf(handlerStruct).NumField(); i++ {
+	for i := 0; i < reflect.TypeOf(handlerStruct).NumMethod(); i++ {
 		method := reflect.TypeOf(handlerStruct).Method(i)
 		mname := method.Name
 		mtype := method.Type
