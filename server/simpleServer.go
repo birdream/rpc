@@ -100,7 +100,7 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 		ctx := context.Background()
 		err = s.codec.Decode(request.Data, argv)
 
-		var returns []reflect.Value
+		// var returns []reflect.Value
 
 		if mtype.ArgType.Kind() != reflect.Ptr {
 			fmt.Println("srv.rcvr", srv.rcvr)
@@ -109,23 +109,23 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 			fmt.Println("reflect.ValueOf(replyv)", reflect.ValueOf(replyv))
 			fmt.Println("mtype.method.Name", mtype.method.Name)
 
-			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
+			mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
 				reflect.ValueOf(argv).Elem(),
 				reflect.ValueOf(replyv),
 			})
 		} else {
-			returns = mtype.method.Func.Call([]reflect.Value{srv.rcvr,
+			mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
 				reflect.ValueOf(argv),
 				reflect.ValueOf(replyv)})
 		}
-		fmt.Println("---")
-		if len(returns) > 0 && returns[0].Interface() != nil {
-			err = returns[0].Interface().(error)
-			s.writeErrorResponse(response, tr, err.Error())
-			return
-		}
+
+		// if len(returns) > 0 && returns[0].Interface() != nil {
+		// 	err = returns[0].Interface().(error)
+		// 	s.writeErrorResponse(response, tr, err.Error())
+		// 	return
+		// }
 
 		responseData, err := codec.GetCodec(request.SerializeType).Encode(replyv)
 		if err != nil {
