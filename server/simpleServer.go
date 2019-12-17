@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"rpc/codec"
 	"rpc/protocol"
+	"rpc/sample/shared"
 	"rpc/transport"
 	"strings"
 	"sync"
@@ -95,7 +96,9 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 		}
 		argv := newValue(mtype.ArgType)
 
-		replyv := newValue(mtype.ReplyType)
+		// replyv := newValue(mtype.ReplyType)
+
+		replyv := &shared.Reply{}
 
 		ctx := context.Background()
 		err = s.codec.Decode(request.Data, argv)
@@ -109,11 +112,14 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 			fmt.Println("reflect.ValueOf(replyv)", reflect.ValueOf(replyv))
 			fmt.Println("mtype.method.Name", mtype.method.Name)
 
-			mtype.method.Func.Call([]reflect.Value{srv.rcvr,
+			mtype.method.Func.Call([]reflect.Value{
+				srv.rcvr,
 				reflect.ValueOf(ctx),
 				reflect.ValueOf(argv).Elem(),
 				reflect.ValueOf(replyv),
 			})
+
+			fmt.Println(replyv)
 		} else {
 			mtype.method.Func.Call([]reflect.Value{srv.rcvr,
 				reflect.ValueOf(ctx),
@@ -126,12 +132,14 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 		// 	s.writeErrorResponse(response, tr, err.Error())
 		// 	return
 		// }
+		fmt.Println("request.SerializeType", request.SerializeType)
 
 		responseData, err := codec.GetCodec(request.SerializeType).Encode(replyv)
 		if err != nil {
 			s.writeErrorResponse(response, tr, err.Error())
 			return
 		}
+		fmt.Println("---err")
 
 		response.StatusCode = protocol.StatusOK
 		response.Data = responseData
