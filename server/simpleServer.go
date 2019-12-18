@@ -106,12 +106,6 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 		// var returns []reflect.Value
 
 		if mtype.ArgType.Kind() != reflect.Ptr {
-			fmt.Println("srv.rcvr", srv.rcvr)
-			fmt.Println("ctx", reflect.ValueOf(ctx))
-			fmt.Println("reflect.ValueOf(argv).Elem()", reflect.ValueOf(argv).Elem())
-			fmt.Println("reflect.ValueOf(replyv)", reflect.ValueOf(replyv))
-			fmt.Println("mtype.method.Name", mtype.method.Name)
-
 			mtype.method.Func.Call([]reflect.Value{
 				srv.rcvr,
 				reflect.ValueOf(ctx),
@@ -132,7 +126,6 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 		// 	s.writeErrorResponse(response, tr, err.Error())
 		// 	return
 		// }
-		fmt.Println("request.SerializeType", request.SerializeType)
 
 		responseData, err := codec.GetCodec(request.SerializeType).Encode(replyv)
 		if err != nil {
