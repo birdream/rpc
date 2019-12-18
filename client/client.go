@@ -152,6 +152,7 @@ func (c *simpleClient) send(ctx context.Context, call *Call) {
 	request.MethodName = serviceMethod[1]
 	request.SerializeType = codec.MessagePack
 	request.CompressType = protocol.CompressTypeNone
+
 	if ctx.Value(protocol.MetaDataKey) != nil {
 		request.MetaData = ctx.Value(protocol.MetaDataKey).(map[string]string)
 	}
