@@ -29,14 +29,13 @@ func main() {
 		reply := &shared.Reply{}
 		fmt.Println("=========Call")
 		if err = c.Call(context.TODO(), "Arith.Mul", &args, reply); err != nil {
-			fmt.Println("=========1")
+			fmt.Println("=========call error")
 			panic(err)
-		} else {
-			fmt.Println("=========")
-			fmt.Println(reply.C)
 		}
 
+		fmt.Println("---Done call")
 		fmt.Println("----out?")
+		fmt.Println(reply)
 		wg.Done()
 	}()
 

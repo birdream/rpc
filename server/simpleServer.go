@@ -136,19 +136,22 @@ func (s *simpleServer) serveTransport(tr transport.Transport) {
 
 		responseData, err := codec.GetCodec(request.SerializeType).Encode(replyv)
 		if err != nil {
+			fmt.Println("---err1")
 			s.writeErrorResponse(response, tr, err.Error())
 			return
 		}
-		fmt.Println("---err")
 
 		response.StatusCode = protocol.StatusOK
 		response.Data = responseData
 
 		_, err = tr.Write(protocol.EncodeMessage(s.option.ProtocolType, response))
 		if err != nil {
+			fmt.Println("---err2")
 			log.Println(err)
 			return
 		}
+
+		fmt.Println("----Call end")
 	}
 }
 

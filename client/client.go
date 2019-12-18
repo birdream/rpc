@@ -113,7 +113,7 @@ func (c *simpleClient) Call(ctx context.Context, serviceMethod string, args inte
 		canFn()
 		c.pendingCalls.Delete(seq)
 		call.Error = errors.New("Client request time out")
-	case <-ctx.Done():
+	case <-call.Done:
 	}
 
 	return call.Error
