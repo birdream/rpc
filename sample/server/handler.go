@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"rpc/sample/shared"
 )
 
@@ -11,8 +10,6 @@ type Arith struct{}
 
 // Add arg可以是指针类型，也可以是指针类型
 func (a Arith) Add(ctx context.Context, arg *shared.Args, reply *shared.Reply) error {
-	fmt.Println("=====In Add")
-
 	reply.C = arg.A + arg.B
 	return nil
 }
@@ -24,7 +21,6 @@ func (a Arith) Minus(ctx context.Context, arg shared.Args, reply *shared.Reply) 
 
 func (a Arith) Mul(ctx context.Context, arg shared.Args, reply *shared.Reply) error {
 	reply.C = arg.A * arg.B
-	fmt.Println("reply.C in Mul,", reply.C)
 	return nil
 }
 
